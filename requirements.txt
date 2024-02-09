@@ -1,3 +1,7 @@
 streamlit
 pydantic
 sqlalchemy
+plotly
+statsmodels
+streamlit_folium
+folium
