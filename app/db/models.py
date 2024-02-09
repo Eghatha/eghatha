@@ -1,9 +1,8 @@
 import datetime as dt
-from sqlalchemy import ForeignKey, Integer, String, DateTime, func
+from sqlalchemy import ForeignKey, Integer, String, DateTime, func, Float
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.ext.mutable import MutableList
 import sqlalchemy.dialects.postgresql as pg
-from geoalchemy2 import Geometry
 from db.enums import UserType, MessageType, PgUserType, PgMessageType
 
 
@@ -28,7 +27,7 @@ class UserBase(Base):
         MutableList.as_mutable(pg.ARRAY(item_type=String)), server_default="{}"
     )
 
-    events: Mapped["Event"] = relationship(back_populates="owner")
+    events: Mapped[list["Event"]] = relationship()
 
     __mapper_args__ = {
         "polymorphic_on": "type",
@@ -57,14 +56,16 @@ class Event(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String)
     image_path: Mapped[str | None] = mapped_column(String)
-    location = mapped_column(Geometry)
+    location: Mapped[str] = mapped_column(String)
+    lat: Mapped[float] = mapped_column(Float)
+    lon: Mapped[float] = mapped_column(Float)
     criticality: Mapped[int] = mapped_column(Integer)
     created_by: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), index=True, server_default=func.now()
     )
 
-    owner = relationship(User, back_populates="events")
+    # owner = relationship(User)
     tags: Mapped[list["Tags"]] = relationship("Tags", secondary="event_tag")
 
 class Messages(Base):
@@ -74,7 +75,7 @@ class Messages(Base):
     message_type: Mapped[MessageType] = mapped_column(PgMessageType)
     text: Mapped[str | None] = mapped_column(String)
     image_path: Mapped[str | None] = mapped_column(String)
-    created_by: Mapped[int] = mapped_column(Integer, ForeignKey("admin.id"))
+    created_by: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), index=True, server_default=func.now()
     )

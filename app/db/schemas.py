@@ -5,7 +5,7 @@ from db.enums import MessageType
 
 class BaseSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    
+
 
 class User(BaseSchema):
     id: int
@@ -25,13 +25,14 @@ class Event(BaseSchema):
     id: int
     title: str
     image_path: str | None
+    location: str
     lat: float
     lon: float
     criticality: int
     created_by: int
 
-    owner: User
-    tags: list["Tags"]
+    # owner: User
+    # tags: list["Tags"]
 
 
 class Messages(BaseSchema):
@@ -46,7 +47,6 @@ class Messages(BaseSchema):
     owner: User
 
 
-
 class Subscription(BaseSchema):
     user_id: int
     event_id: int
@@ -55,9 +55,10 @@ class Subscription(BaseSchema):
 
     event: Event
 
+
 class Tags(BaseSchema):
     id: int
     text: str
-    created_at: int
+    created_at: dt.datetime
 
-    event: Event
+    # event: Event

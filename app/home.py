@@ -2,6 +2,8 @@ import streamlit as st
 from PIL import Image
 import folium
 from streamlit_folium import st_folium
+from crisis import crisis
+
 
 im = Image.open("eghatha.jpg")
 
@@ -91,4 +93,8 @@ def home():
     st_folium(CircuitsMap, width=1000, height=800)
 
 
-home()
+qp = st.query_params
+if qp.get('event_id', None):
+    crisis(qp['event_id'][0])
+else:
+    home()

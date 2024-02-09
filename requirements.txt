@@ -1,9 +1,9 @@
-streamlit
+streamlit==1.31.0
 pydantic
 sqlalchemy
 plotly
 statsmodels
 streamlit_folium
 folium
-geoalchemy2
 psycopg2-binary
+streamlit-chat
