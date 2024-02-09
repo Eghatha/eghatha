@@ -1,24 +1,12 @@
 import datetime as dt
-import enum
 from sqlalchemy import ForeignKey, Integer, String, DateTime, func
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.ext.mutable import MutableList
 import sqlalchemy.dialects.postgresql as pg
 from geoalchemy2 import Geometry
+from db.enums import UserType, MessageType, PgUserType, PgMessageType
 
 
-class MessageType(enum.StrEnum):
-    image = enum.auto()
-    text = enum.auto()
-
-
-class UserType(enum.StrEnum):
-    user = enum.auto()
-    admin = enum.auto()
-
-
-PgUserType = pg.ENUM(UserType, name="user_type")
-PgMessageType = pg.ENUM(MessageType, name="message_type")
 
 
 class Base(DeclarativeBase):
@@ -39,6 +27,8 @@ class UserBase(Base):
     skills: Mapped[list[str]] = mapped_column(
         MutableList.as_mutable(pg.ARRAY(item_type=String)), server_default="{}"
     )
+
+    events: Mapped["Event"] = relationship(back_populates="owner")
 
     __mapper_args__ = {
         "polymorphic_on": "type",
@@ -74,6 +64,8 @@ class Event(Base):
         DateTime(timezone=True), index=True, server_default=func.now()
     )
 
+    owner = relationship(User, back_populates="events")
+    tags: Mapped[list["Tags"]] = relationship("Tags", secondary="event_tag")
 
 class Messages(Base):
     __tablename__ = "messages"
@@ -87,14 +79,23 @@ class Messages(Base):
         DateTime(timezone=True), index=True, server_default=func.now()
     )
 
+    owner: Mapped[User] = relationship()
+
 
 class Subscription(Base):
     __tablename__ = "subscription"
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"), primary_key=True)
-    event_id: Mapped[int] = mapped_column(Integer, ForeignKey("event.id"), primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("user.id"), primary_key=True
+    )
+    event_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("event.id"), primary_key=True
+    )
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), index=True, server_default=func.now()
     )
+    is_approved: Mapped[bool] = mapped_column(default=False)
+
+    event: Mapped[Event] = relationship()
 
 
 class Tags(Base):
@@ -104,3 +105,15 @@ class Tags(Base):
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), index=True, server_default=func.now()
     )
+
+
+class EventTag(Base):
+    __tablename__ = "event_tag"
+    event_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("event.id"), primary_key=True
+    )
+    tag_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("tags.id"), primary_key=True
+    )
+
+    tag: Mapped[Tags] = relationship()
