@@ -72,9 +72,7 @@ class Messages(Base):
     __tablename__ = "messages"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     event_id: Mapped[int] = mapped_column(Integer, ForeignKey("event.id"))
-    message_type: Mapped[MessageType] = mapped_column(PgMessageType)
-    text: Mapped[str | None] = mapped_column(String)
-    image_path: Mapped[str | None] = mapped_column(String)
+    text: Mapped[str] = mapped_column(String)
     created_by: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), index=True, server_default=func.now()

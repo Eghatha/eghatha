@@ -38,9 +38,7 @@ class Event(BaseSchema):
 class Messages(BaseSchema):
     id: int
     event_id: int
-    message_type: MessageType
-    text: str | None
-    image_path: str | None
+    text: str
     created_by: int
     created_at: dt.datetime
 
