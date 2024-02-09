@@ -5,3 +5,5 @@ plotly
 statsmodels
 streamlit_folium
 folium
+geoalchemy2
+psycopg2-binary

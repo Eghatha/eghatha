@@ -16,7 +16,7 @@ RUN pip3 install --upgrade pip
 
 COPY requirements.txt /app
 
-RUN pip3 install --no-cache-dir --upgrade -r requirements.txt
+RUN pip3 install --no-cache-dir --upgrade -r /app/requirements.txt
 
 COPY . /app
 
