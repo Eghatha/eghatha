@@ -8,10 +8,12 @@ def accident_report_form():
     name = st.text_input("Your Name")
 
     # Location input
-    location = st.text_input("Location of Incident")
+    city = st.text_input("City")
+    country = st.text_input("Country")
+    location = st.text_input("Incident Coordinates (e.g., 31.4447, 34.3988)")
 
     # Needs input
-    needs = st.text_area("Needs (e.g., medical assistance, police)")
+    needs = st.text_area("Needs (e.g., medical assistance, food)")
 
     # Tags input
     tags = st.text_input("Tags (comma-separated)")
