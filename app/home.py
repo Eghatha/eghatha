@@ -8,7 +8,7 @@ im = Image.open("eghatha.jpg")
 st.set_page_config(
     page_title="Eghatha",
     page_icon=im,
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="expanded",
     menu_items={
         "Get Help": "https://www.extreme.com",
@@ -54,12 +54,12 @@ def home():
     #     use_container_width=True,
     # )
     CircuitsMap = folium.Map(
-        location=[48.324324, 6.042881],
-        zoom_start=9,
+        location=[31.5017, 34.4668],
+        zoom_start=10.5,
     )
     st_folium(CircuitsMap)
     folium.Marker(
-        location=[48.324324, 6.042881],
+        location=[31.5017, 34.4668],
         popup="Eghatha",
         icon=folium.Icon(color="green"),
     ).add_to(CircuitsMap)
