@@ -30,6 +30,13 @@ def get_events() -> list[schemas.Event]:
 
 
 def home():
+    st.markdown("<center> <h1>Eghatha</h1> </center>", unsafe_allow_html=True)
+
+    st.markdown(
+        "<center> <h1>وَمَنْ أَحْيَاهَا فَكَأَنَّمَا أَحْيَا النَّاسَ جَمِيعًا</h1> </center>",
+        unsafe_allow_html=True,
+    )
+
     events = get_events()
     if not events:
         st.write("Oops.")
@@ -49,7 +56,7 @@ def home():
             icon=folium.Icon(color="red", icon="info-sign"),
         ).add_to(eventsMap)
 
-    st_folium(eventsMap, width=1000, height=800)
+    st_folium(eventsMap, width=1000, height=700)
 
 
 qp = st.query_params

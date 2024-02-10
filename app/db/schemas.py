@@ -42,7 +42,7 @@ class Messages(BaseSchema):
     created_by: int
     created_at: dt.datetime
 
-    owner: User
+    # owner: User
 
 
 class Subscription(BaseSchema):

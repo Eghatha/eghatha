@@ -6,8 +6,6 @@ import sqlalchemy.dialects.postgresql as pg
 from db.enums import UserType, MessageType, PgUserType, PgMessageType
 
 
-
-
 class Base(DeclarativeBase):
     pass
 
@@ -53,9 +51,9 @@ class Admin(UserBase):
 
 class Event(Base):
     __tablename__ = "event"
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String)
-    image_path: Mapped[str | None] = mapped_column(String)
+    image_path: Mapped[str | None] = mapped_column(String, nullable=True)
     location: Mapped[str] = mapped_column(String)
     lat: Mapped[float] = mapped_column(Float)
     lon: Mapped[float] = mapped_column(Float)
@@ -68,9 +66,10 @@ class Event(Base):
     # owner = relationship(User)
     tags: Mapped[list["Tags"]] = relationship("Tags", secondary="event_tag")
 
+
 class Messages(Base):
     __tablename__ = "messages"
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     event_id: Mapped[int] = mapped_column(Integer, ForeignKey("event.id"))
     text: Mapped[str] = mapped_column(String)
     created_by: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
@@ -78,7 +77,7 @@ class Messages(Base):
         DateTime(timezone=True), index=True, server_default=func.now()
     )
 
-    owner: Mapped[User] = relationship()
+    # owner: Mapped[User] = relationship()
 
 
 class Subscription(Base):
@@ -108,11 +107,10 @@ class Tags(Base):
 
 class EventTag(Base):
     __tablename__ = "event_tag"
+    
     event_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("event.id"), primary_key=True
     )
     tag_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("tags.id"), primary_key=True
     )
-
-    tag: Mapped[Tags] = relationship()

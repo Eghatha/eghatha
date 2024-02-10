@@ -4,6 +4,7 @@ Sets up postgresql database connection pool.
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker, Session
+import streamlit as st
 
 db_user: str = os.environ.get("db_user") or ""
 db_port: int = int(os.environ.get("db_port") or 5432)
@@ -24,5 +25,6 @@ engine = create_engine(
 session_maker = sessionmaker(engine)
 
 
+@st.cache_resource
 def get_db() -> Session:
     return session_maker()
