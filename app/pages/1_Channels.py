@@ -8,7 +8,7 @@ def get_channels() -> list[schemas.Subscription]:
     db = get_db()
     query = sa.select(models.Subscription).order_by(
         models.Subscription.is_approved.desc()
-    )
+    ).where(models.Subscription.user_id == 1)
     res = db.scalars(query)
     return [schemas.Subscription.model_validate(channel) for channel in res.all()]
 
