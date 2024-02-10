@@ -29,7 +29,7 @@ def get_events() -> list[schemas.Event]:
     return [schemas.Event.model_validate(event) for event in res.all()]
 
 
-def home():
+def Home():
     st.markdown("<center> <h1>Eghatha</h1> </center>", unsafe_allow_html=True)
 
     st.markdown(
@@ -63,4 +63,4 @@ qp = st.query_params
 if qp.get("event_id", None):
     crisis(qp["event_id"][0])
 else:
-    home()
+    Home()
