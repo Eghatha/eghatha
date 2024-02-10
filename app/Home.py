@@ -33,8 +33,12 @@ def Home():
     st.markdown("<center> <h1>Eghatha</h1> </center>", unsafe_allow_html=True)
 
     st.markdown(
-        "<center> <h1>وَمَنْ أَحْيَاهَا فَكَأَنَّمَا أَحْيَا النَّاسَ جَمِيعًا</h1> </center>",
+        "<center> <h3>وَمَنْ أَحْيَاهَا فَكَأَنَّمَا أَحْيَا النَّاسَ جَمِيعًا</h3></center>",
         unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        "<center> <h1>Disasters Heatmap</h1> </center> ", unsafe_allow_html=True
     )
 
     events = get_events()

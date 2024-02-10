@@ -13,7 +13,7 @@ volunteers_data = [
 
 
 def stats_page():
-    st.title("Volunteer Stats Page")
+    st.title("Stats")
 
     # Display number of volunteers joined
     num_volunteers = len(volunteers_data)
@@ -33,12 +33,12 @@ def stats_page():
         avg_volunteer_time = total_volunteer_time / num_volunteers
         st.subheader(f"Average Volunteer Time: {avg_volunteer_time:.2f} hours")
 
-    # Create pie chart for gender distribution
-    gender_df = pd.DataFrame(
-        [{"Gender": volunteer["Gender"]} for volunteer in volunteers_data]
-    )
-    gender_fig = px.pie(gender_df, names="Gender", title="Gender Distribution")
-    st.plotly_chart(gender_fig)
+    # # Create pie chart for gender distribution
+    # gender_df = pd.DataFrame(
+    #     [{"Gender": volunteer["Gender"]} for volunteer in volunteers_data]
+    # )
+    # gender_fig = px.pie(gender_df, names="Gender", title="Gender Distribution")
+    # st.plotly_chart(gender_fig)
 
     # Create histogram for volunteer time distribution
     volunteer_time_df = pd.DataFrame(
